@@ -3,16 +3,13 @@ import { useEffect, useRef, useState } from "react";
 const SimpleInput = (props) => {
   const [name, setName] = useState("");
   const nameInputRef = useRef();
-  const [isValidName, setIsValidName] = useState(false);
   const [isNameTouched, setIsNameTouched] = useState(false);
+
+  const isValidName = name.trim() !== '';
+  const nameInputIsInvalid = isNameTouched && !isValidName;
 
   const onNameChnagedHandler = (event) => {
     setName(event.target.value);
-    if (name.trim().length === 0) {
-      setIsValidName(false);
-      return;
-    }
-    setIsValidName(true);
     console.log(name);
   };
 
@@ -28,7 +25,6 @@ const SimpleInput = (props) => {
     console.log(nameInputRef.current.value);
   };
 
-  const nameInputIsInvalid = isNameTouched && !isValidName;
 
   const nameInpuClasses = nameInputIsInvalid ? "form-control invalid" : "form-control" ;
 
