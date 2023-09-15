@@ -12,6 +12,15 @@ const SimpleInput = (props) => {
     reset: resetName
   } = useInput(value => value.trim() !== '');
 
+  const {
+    value: enteredEmail,
+    hasError: isValidEmail,
+    valueChangeHandler: onEmailChangedHandler,
+    inputBlurHandler: emailBlurHandler,
+    isValid: isEnterEmailValid,
+    reset: resetEmail
+  } = useInput(value => value.includes('@'));
+
 
   const formSubmitHandler = (event) => {
     event.preventDefault();
@@ -34,6 +43,14 @@ const SimpleInput = (props) => {
           onBlur={nameBlurHandler}
         />
         {isValidName && <p>Please enter a valid name</p>}
+        <label htmlFor="name">Email</label>
+        <input
+          type="text"
+          id="email"
+          onChange={onEmailChangedHandler}
+          onBlur={emailBlurHandler}
+        />
+        {isValidEmail && <p>Please enter a valid email</p>}
       </div>
       <div className="form-actions">
         <button>Submit</button>
