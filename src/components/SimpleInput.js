@@ -1,32 +1,26 @@
-import { useEffect, useRef, useState } from "react";
+import useInput from "../hooks/use-input";
 
 const SimpleInput = (props) => {
-  const [name, setName] = useState("");
-  const nameInputRef = useRef();
-  const [isNameTouched, setIsNameTouched] = useState(false);
 
-  const isValidName = name.trim() !== '';
-  const nameInputIsInvalid = isNameTouched && !isValidName;
 
-  const onNameChnagedHandler = (event) => {
-    setName(event.target.value);
-    console.log(name);
-  };
+  const {
+    value: enteredName,
+    hasError: isValidName,
+    valueChangeHandler: onNameChangedHandler,
+    inputBlurHandler: nameBlurHandler,
+    isValid: isEnterNameValid,
+    reset: resetName
+  } = useInput(value => value.trim() !== '');
 
-  useEffect(() => {
-    if (isValidName) {
-      console.log("Name is Valid");
-    }
-  }, [isValidName]);
 
   const formSubmitHandler = (event) => {
     event.preventDefault();
-    setIsNameTouched(true);
-    console.log(nameInputRef.current.value);
+    console.log(enteredName);
+    resetName();
   };
 
 
-  const nameInpuClasses = nameInputIsInvalid ? "form-control invalid" : "form-control" ;
+  const nameInpuClasses = isValidName ? "form-control invalid" : "form-control";
 
 
   return (
@@ -36,10 +30,10 @@ const SimpleInput = (props) => {
         <input
           type="text"
           id="name"
-          ref={nameInputRef}
-          onChange={onNameChnagedHandler}
+          onChange={onNameChangedHandler}
+          onBlur={nameBlurHandler}
         />
-        {nameInputIsInvalid && <p>Please enter a valid name</p>}
+        {isValidName && <p>Please enter a valid name</p>}
       </div>
       <div className="form-actions">
         <button>Submit</button>
